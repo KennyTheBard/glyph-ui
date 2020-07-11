@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 class NewStory extends React.Component {
@@ -25,11 +27,11 @@ class NewStory extends React.Component {
     }
 
     onCreate = (e) => {
-        axios.post("api/story/create", {
+        axios.post(`${API_URL}/story`, {
             title: this.state.title,
             description: this.state.description,
         }).then((res) => {
-            this.state.history.push("/story/edit/:storyId")
+            this.state.history.push(`/story/edit/${res.body.id}`);
         }).catch((error) => {
             console.log(error);
         });
@@ -40,18 +42,18 @@ class NewStory extends React.Component {
             <Form>
                 <Form.Group controlId="formTitle">
                     <Form.Label>Title</Form.Label>
-                    <Form.Control   type="textarea"
+                    <Form.Control   type="textarea" size="lg"
                                     placeholder="Title"
                                     onChange={this.onTitleChange}/>
                 </Form.Group>
                 <Form.Group controlId="formDescription">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control   type="textarea"
+                    <Form.Control   type="textarea" as="textarea"
                                     placeholder="Describe the story in a few sentences. No spoilers!"
                                     onChange={this.onDescriptionChange}/>
                 </Form.Group>
-                <Button variant="primary" type="submit"
-                        onChange={this.onCreate}>
+                <Button variant="primary" type="button"
+                        onClick={this.onCreate}>
                     Create
                 </Button>
             </Form>

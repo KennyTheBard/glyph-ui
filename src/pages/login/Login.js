@@ -1,5 +1,4 @@
 import React from 'react';
-import StoryCard from './StoryCard';
 import { Form, Button } from 'react-bootstrap';
 
 const axios = require('axios');
@@ -23,7 +22,7 @@ class Login extends React.Component {
 
     onPasswordChange = (e) => {
         let passwordsMatch = true;
-        if (!!this.state.retypePassword && this.state.retypePassword != e.target.value) {
+        if (!!this.state.retypePassword && this.state.retypePassword !== e.target.value) {
             passwordsMatch = false;
         }
         this.setState({password: e.target.value, passwordsMatch: passwordsMatch});
@@ -45,8 +44,8 @@ class Login extends React.Component {
             return;
         }
 
-        if (validateEmail(this.state.identificator)) {
-            axios.post("api/login-email", {
+        if (this.validateEmail(this.state.identificator)) {
+            axios.post(`${process.env.SERVER_URL}/user/login-email`, {
                 email: this.state.email,
                 password: this.state.password,
             }).then((res) => {
@@ -55,7 +54,7 @@ class Login extends React.Component {
                 console.log(error);
             })
         } else {
-            axios.post("api/login-username", {
+            axios.post(`${process.env.SERVER_URL}/user/login-username`, {
                 username: this.state.username,
                 password: this.state.password,
             }).then((res) => {

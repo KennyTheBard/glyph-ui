@@ -1,5 +1,4 @@
 import React from 'react';
-import StoryCard from './StoryCard';
 import { Form, Button } from 'react-bootstrap';
 
 const axios = require('axios');
@@ -30,7 +29,7 @@ class Register extends React.Component {
 
     onPasswordChange = (e) => {
         let passwordsMatch = true;
-        if (!!this.state.retypePassword && this.state.retypePassword != e.target.value) {
+        if (!!this.state.retypePassword && this.state.retypePassword !== e.target.value) {
             passwordsMatch = false;
         }
         this.setState({password: e.target.value, passwordsMatch: passwordsMatch});
@@ -38,7 +37,7 @@ class Register extends React.Component {
 
     onRetypePasswordChange = (e) => {
         let passwordsMatch = true;
-        if (!!this.state.password && this.state.password != e.target.value) {
+        if (!!this.state.password && this.state.password !== e.target.value) {
             passwordsMatch = false;
         }
         this.setState({retypePassword: e.target.value, passwordsMatch: passwordsMatch});
@@ -55,7 +54,7 @@ class Register extends React.Component {
             return;
         }
 
-        axios.post("api/register", {
+        axios.post(`${process.env.SERVER_URL}/user/register`, {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
@@ -68,7 +67,7 @@ class Register extends React.Component {
 
     render() {
         let matchingError;
-        if (!password) {
+        if (!this.state.password) {
             matchingError =
                 <Form.Text muted="true">
                     Passwords do not match.

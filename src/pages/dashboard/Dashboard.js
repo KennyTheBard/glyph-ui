@@ -16,22 +16,18 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('test/story/').then((res) => {
+        axios.get(`${process.env.SERVER_URL}/story`).then((res) => {
             this.setState({stories: res.body})
         }).catch((err) => {
             console.log(err)
         })
     }
 
-    onNewStory = (e) => {
-
-    }
-
     render() {
         return (
             <>
                 <Form inline>
-                    <Button variant="success" onclick={this.onNewStory}>New story</Button>
+                    <Button variant="success" onClick={() => this.props.history.push("/story")}>New story</Button>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-primary">Search</Button>
                 </Form>

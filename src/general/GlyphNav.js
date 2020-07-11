@@ -1,18 +1,20 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
 import UserCorner from './UserCorner.js';
 
-function GlyphNav(props) {
+function GlyphNav() {
     let token = localStorage.getItem("jwt");
+    let history = useHistory();
 
 	return (
 		<Navbar className="navbar-dark" bg="dark" expand="lg">
-            <Navbar.Brand href="#home">Glypher.io</Navbar.Brand>
+            <Navbar.Brand>Glypher.io</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link>Home</Nav.Link>
+                    <Nav.Link onClick={() => history.push("/")}>Home</Nav.Link>
                     <Nav.Link>Link</Nav.Link>
                     <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                         <NavDropdown.Item>Action</NavDropdown.Item>
@@ -26,9 +28,9 @@ function GlyphNav(props) {
             }
             {!token &&
                 <>
-                    <Button>Login</Button>
+                    <Button onClick={() => history.push("/login")}>Login</Button>
                     &nbsp;
-                    <Button>Register</Button>
+                    <Button onClick={() => history.push("/register")}>Register</Button>
                 </>
             }
         </Navbar>

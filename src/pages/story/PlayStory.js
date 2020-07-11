@@ -19,7 +19,7 @@ class PlayStory extends React.Component {
 
     onChoiceFactory = (choiceId) => {
         return (e) => {
-            axios.post("api/story/choose", {
+            axios.post(`${process.env.SERVER_URL}/story/choose`, {
                 choiceId: choiceId,
             }).then((res) => {
                 this.setState({
@@ -32,7 +32,6 @@ class PlayStory extends React.Component {
         }
     }
     
-
     render() {
         return (
             <>

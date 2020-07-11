@@ -1,6 +1,8 @@
 import React from 'react';
 import { Spinner } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 function Activate(props) {
@@ -14,13 +16,13 @@ function Activate(props) {
         );
     }
     
-    axios.get(`/api/activate/${props.userId}/${props.code}`).then((res) => {
+    axios.get(`${API_URL}/user/activate/${props.userId}/${props.code}`).then((res) => {
         if (res.activate.check) {
             props.history.push("/");
         }
     }).catch((error) => {
         console.log(error);
-    })
+    });
     return (
 		<>
             <p>
