@@ -52,7 +52,7 @@ class NewStory extends React.Component {
                                     placeholder="Describe the story in a few sentences. No spoilers!"
                                     onChange={this.onDescriptionChange}/>
                 </Form.Group>
-                <Button variant="primary" type="button"
+                <Button variant="primary"
                         onClick={this.onCreate}>
                     Create
                 </Button>

@@ -81,7 +81,7 @@ class Login extends React.Component {
                                         placeholder="password"
                                         onChange={this.onPasswordChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit"
+                    <Button variant="primary"
                             onChange={this.onSubmit}>
                         Login
                     </Button>

@@ -112,7 +112,7 @@ class Register extends React.Component {
                         {matchingError}
                         {this.state.triedSubmit && unfilledField}
                     </Form.Group>
-                    <Button variant="primary" type="submit"
+                    <Button variant="primary"
                             onChange={this.onSubmit}>
                         Register
                     </Button>
