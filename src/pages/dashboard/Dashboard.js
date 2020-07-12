@@ -2,6 +2,8 @@ import React from 'react';
 import StoryCard from './StoryCard';
 import { Form, FormControl, Button } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 class Dashboard extends React.Component {
@@ -16,7 +18,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${process.env.SERVER_URL}/story`).then((res) => {
+        axios.get(`${API_URL}/story`).then((res) => {
             this.setState({stories: res.body})
         }).catch((err) => {
             console.log(err)

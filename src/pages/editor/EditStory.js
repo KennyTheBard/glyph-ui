@@ -18,10 +18,9 @@ class EditStory extends React.Component {
         }
     }
 
-
     render() {
         return (
-            <div className="horizontal-flex-container">
+            <div>
                 <BrowseScenes/>
                 <EditScene/>
             </div>

@@ -1,4 +1,7 @@
 import React from 'react';
+import EditScene from './EditScene.js';
+
+import { API_URL } from '../../config.js';
 
 const axios = require('axios');
 
@@ -11,6 +14,7 @@ class BrowseScenes extends React.Component {
             history: props.history,
             user: props.user,
             storyId: props.storyId,
+            pushHook: props.pushHook,
             scenes: [],
             searchPhrase: null,
         }
@@ -21,7 +25,7 @@ class BrowseScenes extends React.Component {
     }
 
     onSearch = (e) => {
-        axios.get(`${process.env.SERVER_URL}/story/${this.state.storyId}/scene?search=${this.state.searchPhrase}`)
+        axios.get(`${API_URL}/story/${this.state.storyId}/scene?search=${this.state.searchPhrase}`)
         .then((res) => {
             this.setState({scenes: res.body});
         }).catch((error) => {
@@ -42,7 +46,7 @@ class BrowseScenes extends React.Component {
                 <ListGroup>
                     {this.state.scenes.map((scene) => {
                         return (
-                            <ListGroup.Item>
+                            <ListGroup.Item onClick={() => this.state.pushHook('scene', <EditScene scene={scene} pushHook={this.state.pushHook}/>)}>
                                 <div className="scene-title">{scene.title}</div>
                             </ListGroup.Item>
                         )

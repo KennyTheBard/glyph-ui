@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 class EditScene extends React.Component {
@@ -11,10 +13,20 @@ class EditScene extends React.Component {
         this.state = {
             history: props.history,
             user: props.user,
+            pushHook: props.pushHook,
             storyId: props.storyId,
             scene: props.scene,
-            choices: props.choices,
+            choices: [],
         }
+    }
+
+    componentDidMount() {
+        axios.get(`${API_URL}/story/${this.state.storyID}/scene/${scene.id}/choices`)
+        .then((res) => {
+            this.setState({choices: res.body});
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     onSceneContentChange = (e) => {
@@ -46,7 +58,7 @@ class EditScene extends React.Component {
     }
 
     onSave = (e) => {
-        axios.put(`${process.env.SERVER_URL}/story/${this.state.storyID}/scene/${this.state.scene.id}`, this.state.scene)
+        axios.put(`${API_URL}/story/${this.state.storyID}/scene/${this.state.scene.id}`, this.state.scene)
         .then((res) => {
 
         }).catch((error) => {
@@ -55,14 +67,14 @@ class EditScene extends React.Component {
 
         this.state.choices.map((choice) => {
             if (!chocie.id) {
-                axios.post(`${process.env.SERVER_URL}/story/${this.state.storyId}/choice`,
+                axios.post(`${API_URL}/story/${this.state.storyId}/choice`,
                             {...choice, parentSceneId: this.state.scene.id})
                 .then((res) => {
                 }).catch((error) => {
                     console.log(error);
                 });
             } else {
-                axios.put(`${process.env.SERVER_URL}/story/${this.state.storyId}/choice/${choice.id}/details`, choice)
+                axios.put(`${API_URL}/story/${this.state.storyId}/choice/${choice.id}/details`, choice)
                 .then((res) => {
 
                 }).catch((error) => {
@@ -76,14 +88,14 @@ class EditScene extends React.Component {
         return (
             <Form>
                 <Form.Label>Scene content</Form.Label>
-                <Form.Control   type="textarea" size="lg" as="textarea"
+                <Form.Control   type="textarea" size="lg" as="textarea" plaintext readonly
                                 defaultValue={this.state.scene.content}
                                 onChange={this.onSceneContentChange}/>
                 {this.state.choices.map((choice) => {
                     return (
                     <>
                         <Form.Label>Choice content</Form.Label>
-                        <Form.Control   type="textarea"
+                        <Form.Control   type="textarea" plaintext readonly
                                         defaultValue={choice.content}
                                         onChange={this.onChoiceContentChange(choice.id)}/>
                     </>)

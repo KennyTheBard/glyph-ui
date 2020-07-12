@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 class Login extends React.Component {
@@ -45,7 +47,7 @@ class Login extends React.Component {
         }
 
         if (this.validateEmail(this.state.identificator)) {
-            axios.post(`${process.env.SERVER_URL}/user/login-email`, {
+            axios.post(`${API_URL}/user/login-email`, {
                 email: this.state.email,
                 password: this.state.password,
             }).then((res) => {
@@ -54,7 +56,7 @@ class Login extends React.Component {
                 console.log(error);
             })
         } else {
-            axios.post(`${process.env.SERVER_URL}/user/login-username`, {
+            axios.post(`${API_URL}/user/login-username`, {
                 username: this.state.username,
                 password: this.state.password,
             }).then((res) => {

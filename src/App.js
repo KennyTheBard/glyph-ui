@@ -9,7 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard.js';
 import Activate from './pages/activate/Activate.js';
 import Register from './pages/register/Register.js';
 import Login from './pages/login/Login.js';
-import NewStory from './pages/story/NewStory.js';
+import NewStory from './pages/editor/NewStory.js';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
@@ -62,10 +62,10 @@ function App() {
 										{...matchProps}
 									/>
 								}/>
-						<Route exact path="/story/edit/:storyId">
+						<Route exact path="/story/:storyId/edit">
 							<Dashboard/>
 						</Route>
-						<Route exact path="/story/play/:storyId">
+						<Route exact path="/story/:storyId/play">
 							<Dashboard/>
 						</Route>
 					</Switch>

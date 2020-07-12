@@ -1,6 +1,8 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
 const axios = require('axios');
 
 class Register extends React.Component {
@@ -54,7 +56,7 @@ class Register extends React.Component {
             return;
         }
 
-        axios.post(`${process.env.SERVER_URL}/user/register`, {
+        axios.post(`${API_URL}/user/register`, {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,

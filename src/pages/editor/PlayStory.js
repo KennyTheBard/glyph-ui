@@ -1,6 +1,9 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 
+import { API_URL } from '../../config.js';
+
+
 const axios = require('axios');
 
 class PlayStory extends React.Component {
@@ -19,7 +22,7 @@ class PlayStory extends React.Component {
 
     onChoiceFactory = (choiceId) => {
         return (e) => {
-            axios.post(`${process.env.SERVER_URL}/story/choose`, {
+            axios.post(`${API_URL}/story/choose`, {
                 choiceId: choiceId,
             }).then((res) => {
                 this.setState({
