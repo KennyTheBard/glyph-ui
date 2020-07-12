@@ -48,18 +48,20 @@ class Login extends React.Component {
 
         if (this.validateEmail(this.state.identificator)) {
             axios.post(`${API_URL}/user/login-email`, {
-                email: this.state.email,
+                email: this.state.identificator,
                 password: this.state.password,
             }).then((res) => {
+                localStorage.setItem('jwt', res.data);
                 this.state.history.push("/")
             }).catch((error) => {
                 console.log(error);
             })
         } else {
             axios.post(`${API_URL}/user/login-username`, {
-                username: this.state.username,
+                username: this.state.identificator,
                 password: this.state.password,
             }).then((res) => {
+                localStorage.setItem('jwt', res.data);
                 this.state.history.push("/")
             }).catch((error) => {
                 console.log(error);
@@ -84,7 +86,7 @@ class Login extends React.Component {
                                         onChange={this.onPasswordChange}/>
                     </Form.Group>
                     <Button variant="primary"
-                            onChange={this.onSubmit}>
+                            onClick={this.onSubmit}>
                         Login
                     </Button>
                 </Form>

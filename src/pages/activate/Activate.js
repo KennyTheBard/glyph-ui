@@ -6,7 +6,7 @@ import { API_URL } from '../../config.js';
 const axios = require('axios');
 
 function Activate(props) {
-    if (!props.user || !props.code) {
+    if (!props.match.params.userId || !props.match.params.code) {
         return (
             <>
                 <p>
@@ -16,13 +16,14 @@ function Activate(props) {
         );
     }
     
-    axios.get(`${API_URL}/user/activate/${props.userId}/${props.code}`).then((res) => {
-        if (res.activate.check) {
+    axios.get(`${API_URL}/user/activate/${props.match.params.userId}/${props.match.params.code}`).then((res) => {
+        if (res.body.activated) {
             props.history.push("/");
         }
     }).catch((error) => {
         console.log(error);
     });
+
     return (
 		<>
             <p>

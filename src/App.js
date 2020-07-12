@@ -44,7 +44,7 @@ function App() {
 										{...matchProps}
 									/>
 								}/>
-						<Route 	exact path="/activate/:id/:code"
+						<Route 	exact path="/activate/:userId/:code"
 								render={(matchProps) => 
 									<Activate
 										{...matchProps}
