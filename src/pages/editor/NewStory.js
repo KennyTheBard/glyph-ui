@@ -27,11 +27,15 @@ class NewStory extends React.Component {
     }
 
     onCreate = (e) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
         axios.post(`${API_URL}/story`, {
             title: this.state.title,
             description: this.state.description,
-        }).then((res) => {
-            this.state.history.push(`/story/edit/${res.body.id}`);
+        }, config).then((res) => {
+            this.state.history.push(`/story/edit/${res.data.id}`);
         }).catch((error) => {
             console.log(error);
         });

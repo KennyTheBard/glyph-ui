@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	BrowserRouter, Route, Switch,
 } from 'react-router-dom';
@@ -14,16 +14,20 @@ import NewStory from './pages/editor/NewStory.js';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
 
+import { parseJwt } from './utils/parseJwt.js';
+
 require('dotenv').config()
 
 const history = createBrowserHistory();
 
 function App() {
+	const storedJwt = localStorage.getItem("jwt");
+	const [user, setUser] = useState(!storedJwt ? null : parseJwt(storedJwt));
 
 	return (
 		<>
 			<BrowserRouter basename="/" history={history}>
-				<GlyphNav/>
+				<GlyphNav user={user}/>
 				<div className="content">
 					<Switch>
 						<Route 	exact path={"/"}
@@ -54,9 +58,10 @@ function App() {
 								render={(matchProps) => 
 									<Login
 										{...matchProps}
+										setUserHook={setUser}
 									/>
 								}/>
-						<Route exact path="/story"
+						<Route exact path="/story/new"
 								render={(matchProps) => 
 									<NewStory
 										{...matchProps}

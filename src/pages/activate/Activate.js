@@ -17,7 +17,7 @@ function Activate(props) {
     }
     
     axios.get(`${API_URL}/user/activate/${props.match.params.userId}/${props.match.params.code}`).then((res) => {
-        if (res.body.activated) {
+        if (res.data.activated) {
             props.history.push("/");
         }
     }).catch((error) => {

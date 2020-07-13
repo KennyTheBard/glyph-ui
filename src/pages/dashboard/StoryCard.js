@@ -13,12 +13,10 @@ class StoryCard extends React.Component {
     render() {
         return (
             <>
-                {this.state.stories.map((s) => {
-                    return <div>
-                        <h3>{s.title}</h3>
-                        <p>{s.description}</p>
-                    </div>
-                })}
+                <div>
+                    <h3>{this.state.story.title}</h3>
+                    <p>{this.state.story.description}</p>
+                </div>
             </>
         )
     }

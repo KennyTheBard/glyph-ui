@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
+import { parseJwt } from '../../utils/parseJwt.js';
 
 const axios = require('axios');
 
@@ -12,6 +13,7 @@ class Login extends React.Component {
 
         this.state = {
             history: props.history,
+            setUserHook: props.setUserHook,
             identificator: null,
             password: null,
             triedSubmit: false,
@@ -46,24 +48,24 @@ class Login extends React.Component {
             return;
         }
 
+        const handleResult = (res) => {
+            that.state.setUserHook(parseJwt(res.data));
+            localStorage.setItem('jwt', res.data);
+            that.state.history.push("/");
+        }
+
         if (this.validateEmail(this.state.identificator)) {
             axios.post(`${API_URL}/user/login-email`, {
                 email: this.state.identificator,
                 password: this.state.password,
-            }).then((res) => {
-                localStorage.setItem('jwt', res.data);
-                this.state.history.push("/")
-            }).catch((error) => {
+            }).then(handleResult).catch((error) => {
                 console.log(error);
             })
         } else {
             axios.post(`${API_URL}/user/login-username`, {
                 username: this.state.identificator,
                 password: this.state.password,
-            }).then((res) => {
-                localStorage.setItem('jwt', res.data);
-                this.state.history.push("/")
-            }).catch((error) => {
+            }).then(handleResult).catch((error) => {
                 console.log(error);
             })
         }

@@ -21,13 +21,17 @@ class PlayStory extends React.Component {
     }
 
     onChoiceFactory = (choiceId) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
         return (e) => {
             axios.post(`${API_URL}/story/choose`, {
                 choiceId: choiceId,
-            }).then((res) => {
+            }, config).then((res) => {
                 this.setState({
-                    scene: res.body.scene,
-                    choices: res.body.choices,
+                    scene: res.data.scene,
+                    choices: res.data.choices,
                 })
             }).catch((error) => {
                 console.log(error);

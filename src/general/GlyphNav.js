@@ -4,9 +4,9 @@ import { Button, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 
 import UserCorner from './UserCorner.js';
 
-function GlyphNav() {
-    let token = localStorage.getItem("jwt");
+function GlyphNav(props) {
     let history = useHistory();
+    const user = props.user;
 
 	return (
 		<Navbar className="navbar-dark" bg="dark" expand="lg">
@@ -23,16 +23,18 @@ function GlyphNav() {
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
-            {!!token &&
-                <UserCorner user={token}/>
+            <div className="justify-content-end">
+            {!!user &&
+                <UserCorner user={user}/>
             }
-            {!token &&
+            {!user &&
                 <>
                     <Button onClick={() => history.push("/login")}>Login</Button>
                     &nbsp;
                     <Button onClick={() => history.push("/register")}>Register</Button>
                 </>
             }
+            </div>
         </Navbar>
     );
 }

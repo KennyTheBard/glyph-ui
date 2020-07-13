@@ -23,7 +23,7 @@ class EditScene extends React.Component {
     componentDidMount() {
         axios.get(`${API_URL}/story/${this.state.storyID}/scene/${scene.id}/choices`)
         .then((res) => {
-            this.setState({choices: res.body});
+            this.setState({choices: res.data});
         }).catch((error) => {
             console.log(error);
         })
@@ -58,8 +58,12 @@ class EditScene extends React.Component {
     }
 
     onSave = (e) => {
-        axios.put(`${API_URL}/story/${this.state.storyID}/scene/${this.state.scene.id}`, this.state.scene)
-        .then((res) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.put(`${API_URL}/story/${this.state.storyID}/scene/${this.state.scene.id}`,
+        this.state.scene, config).then((res) => {
 
         }).catch((error) => {
             console.log(error);
@@ -68,14 +72,15 @@ class EditScene extends React.Component {
         this.state.choices.map((choice) => {
             if (!chocie.id) {
                 axios.post(`${API_URL}/story/${this.state.storyId}/choice`,
-                            {...choice, parentSceneId: this.state.scene.id})
-                .then((res) => {
+                            {...choice, parentSceneId: this.state.scene.id},
+                config).then((res) => {
+
                 }).catch((error) => {
                     console.log(error);
                 });
             } else {
-                axios.put(`${API_URL}/story/${this.state.storyId}/choice/${choice.id}/details`, choice)
-                .then((res) => {
+                axios.put(`${API_URL}/story/${this.state.storyId}/choice/${choice.id}/details`,
+                choice, config).then((res) => {
 
                 }).catch((error) => {
                     console.log(error);

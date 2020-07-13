@@ -18,10 +18,14 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${API_URL}/story`).then((res) => {
-            this.setState({stories: res.body})
-        }).catch((err) => {
-            console.log(err)
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.get(`${API_URL}/story`, config).then((res) => {
+            this.setState({stories: res.data});
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -29,12 +33,12 @@ class Dashboard extends React.Component {
         return (
             <>
                 <Form inline>
-                    <Button variant="success" onClick={() => this.props.history.push("/story")}>New story</Button>
+                    <Button variant="success" onClick={() => this.props.history.push("/story/new")}>New story</Button>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-primary">Search</Button>
                 </Form>
-                {this.state.stories.map((s) => {
-                    return <StoryCard story={s}/>
+                {this.state.stories.map((story, index) => {
+                    return <StoryCard key={index} story={story}/>
                 })}
             </>
         )
