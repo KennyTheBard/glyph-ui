@@ -10,6 +10,7 @@ import Activate from './pages/activate/Activate.js';
 import Register from './pages/register/Register.js';
 import Login from './pages/login/Login.js';
 import NewStory from './pages/editor/NewStory.js';
+import Editor from './pages/editor/Editor.js';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
@@ -67,9 +68,12 @@ function App() {
 										{...matchProps}
 									/>
 								}/>
-						<Route exact path="/story/:storyId/edit">
-							<Dashboard/>
-						</Route>
+						<Route exact path="/story/:storyId/edit"
+								render={(matchProps) => 
+									<Editor
+										{...matchProps}
+									/>
+								}/>
 						<Route exact path="/story/:storyId/play">
 							<Dashboard/>
 						</Route>

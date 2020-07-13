@@ -12,6 +12,7 @@ class Dashboard extends React.Component {
         super(props);
 
         this.state = {
+            history: props.history,
             token: null,
             stories: [],
         }
@@ -38,7 +39,7 @@ class Dashboard extends React.Component {
                     <Button variant="outline-primary">Search</Button>
                 </Form>
                 {this.state.stories.map((story, index) => {
-                    return <StoryCard key={index} story={story}/>
+                    return <StoryCard history={this.state.history} key={index} story={story}/>
                 })}
             </>
         )

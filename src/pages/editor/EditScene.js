@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
 
@@ -21,7 +21,7 @@ class EditScene extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${API_URL}/story/${this.state.storyID}/scene/${scene.id}/choices`)
+        axios.get(`${API_URL}/story/${this.state.storyID}/scene/${this.state.scene.id}/choices`)
         .then((res) => {
             this.setState({choices: res.data});
         }).catch((error) => {
@@ -69,8 +69,8 @@ class EditScene extends React.Component {
             console.log(error);
         });
 
-        this.state.choices.map((choice) => {
-            if (!chocie.id) {
+        this.state.choices.forEach((choice) => {
+            if (!choice.id) {
                 axios.post(`${API_URL}/story/${this.state.storyId}/choice`,
                             {...choice, parentSceneId: this.state.scene.id},
                 config).then((res) => {
@@ -92,15 +92,15 @@ class EditScene extends React.Component {
     render() {
         return (
             <Form>
-                <Form.Label>Scene content</Form.Label>
-                <Form.Control   type="textarea" size="lg" as="textarea" plaintext readonly
+                <Form.Label>Scene-{this.state.scene.id} content</Form.Label>
+                <Form.Control   type="textarea" size="lg" as="textarea" plaintext readOnly
                                 defaultValue={this.state.scene.content}
                                 onChange={this.onSceneContentChange}/>
                 {this.state.choices.map((choice) => {
                     return (
                     <>
                         <Form.Label>Choice content</Form.Label>
-                        <Form.Control   type="textarea" plaintext readonly
+                        <Form.Control   type="textarea" plaintext readOnly
                                         defaultValue={choice.content}
                                         onChange={this.onChoiceContentChange(choice.id)}/>
                     </>)
