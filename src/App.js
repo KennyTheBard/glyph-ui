@@ -66,12 +66,14 @@ function App() {
 								render={(matchProps) => 
 									<Library
 										{...matchProps}
+										user={user}
 									/>
 								}/>
 						<Route exact path="/workbench"
 								render={(matchProps) => 
 									<Workbench
 										{...matchProps}
+										user={user}
 									/>
 								}/>
 					</Switch>

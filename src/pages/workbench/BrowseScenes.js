@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, FormControl, Button, ListGroup } from 'react-bootstrap';
 
-import EditScene from './ViewScene.js';
 import NewScene from './NewScene.js';
 
 import { API_URL } from '../../config.js';
+import ViewScene from './ViewScene.js';
 
 const axios = require('axios');
 
@@ -62,7 +62,8 @@ class BrowseScenes extends React.Component {
                         this.state.pushHook(
                             this.state.breadId + 1,
                             'New scene',
-                            <NewScene   pushHook={this.state.pushHook}
+                            <NewScene   user={this.state.user}
+                                        pushHook={this.state.pushHook}
                                         popHook={this.state.popHook}
                                         breadId={this.state.breadId + 1}
                                         storyId={this.state.storyId}/>
@@ -81,12 +82,13 @@ class BrowseScenes extends React.Component {
                                                 this.state.pushHook(
                                                     this.state.breadId + 1,
                                                     `Scene-${scene.id}`,
-                                                    <EditScene  storyId={this.state.storyId} 
-                                                                scene={scene}
-                                                                key={scene.id}
-                                                                breadId={this.state.breadId + 1}
+                                                    <ViewScene  user={this.state.user}
                                                                 pushHook={this.state.pushHook}
-                                                                popHook={this.state.popHook}/>
+                                                                popHook={this.state.popHook}
+                                                                breadId={this.state.breadId + 1}
+                                                                key={scene.id}
+                                                                storyId={this.state.storyId} 
+                                                                scene={scene}/>
                                                 );
                                             }}>
                                 <div>

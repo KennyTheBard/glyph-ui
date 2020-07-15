@@ -36,7 +36,8 @@ class ViewScene extends React.Component {
                     this.state.pushHook(
                         this.state.breadId + 1,
                         'Browse scenes',
-                        <BrowseScenes   pushHook={this.state.pushHook}
+                        <BrowseScenes   user={this.state.user}
+                                        pushHook={this.state.pushHook}
                                         popHook={this.state.popHook}
                                         breadId={this.state.breadId + 1}
                                         storyId={this.state.story.id}/>

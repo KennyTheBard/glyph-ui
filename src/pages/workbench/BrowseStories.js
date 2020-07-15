@@ -52,9 +52,10 @@ class BrowseStories extends React.Component {
                         this.state.pushHook(
                             this.state.breadId + 1,
                             `New story`,
-                            <NewStory   breadId={this.state.breadId + 1}
+                            <NewStory   user={this.state.user}
                                         pushHook={this.state.pushHook}
-                                        popHook={this.state.popHook}/>
+                                        popHook={this.state.popHook}
+                                        breadId={this.state.breadId + 1}/>
                             );
                     }}>
                         New story
@@ -70,10 +71,11 @@ class BrowseStories extends React.Component {
                                             this.state.pushHook(
                                                 this.state.breadId + 1,
                                                 `Story-${story.id}`,
-                                                <ViewStory  key={story.id}
-                                                            breadId={this.state.breadId + 1}
+                                                <ViewStory  user={this.state.user}
                                                             pushHook={this.state.pushHook}
                                                             popHook={this.state.popHook}
+                                                            breadId={this.state.breadId + 1}
+                                                            key={story.id}
                                                             story={story}/>
                                             );
                             }}>

@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import { API_URL } from '../../config.js';
 import EditChoice from './EditChoice.js';
 import NewChoice from './NewChoice.js';
+import EditTextarea from './edit/EditTextarea.js';
 
 import './ViewScene.scss';
 
@@ -39,15 +40,23 @@ class ViewScene extends React.Component {
         })
     }
 
-    onAddChoice = () => {
-        let choice = {
-            id: null,
-            content: "",
-        };
+    onSceneContentChange = (e) => {
+        let scene = this.state.scene;
+        scene.content = e.target.value;
+        this.setState({scene: scene});
+    }
 
-        this.setState({
-            choices: [...this.state.choices, choice],
-            originalChoices: [...this.state.originalChoices, {}]});
+    onAddChoice = () => {
+        this.state.pushHook(
+            this.state.breadId + 1,
+            'New choice',
+            <NewChoice user={this.state.user}
+                        pushHook={this.state.pushHook}
+                        popHook={this.state.popHook}
+                        breadId={this.state.breadId + 1}
+                        storyId={this.state.storyId}
+                        choice={{id: null, content: null, parentSceneId: this.state.scene.id}}/>
+        );
     }
 
     render() {
@@ -55,39 +64,28 @@ class ViewScene extends React.Component {
             <>
                 <div className="scene">
                     <p className="title">Scene-{this.state.scene.id}</p>
-                    <p>{this.state.scene.content}</p>
+                    <EditTextarea   value={this.state.scene.content}
+                                    onChangeHook={this.onSceneContentChange}/>
                 </div>
                 {this.state.choices.map((choice, index) => {
                     return (
-                    <div className="choice" onClick={() => {
-                        this.state.pushHook(
-                            this.state.breadId + 1,
-                            `Choice-${choice.id}`,
-                            <EditChoice pushHook={this.state.pushHook}
-                                        popHook={this.state.popHook}
-                                        breadId={this.state.breadId + 1}
-                                        storyId={this.state.storyId}
-                                        choice={choice}/>
-                        );
-                    }}>
-                        <p className="title">Choice-{choice.id}</p>
-                        {!!choice.content
-                                ? <p>{choice.content}</p>
-                                : <p className="empty-content">&lt;empty&gt;</p>}
-                        
-                    </div>)
+                        <div key={index} className="choice" onClick={() => {
+                            this.state.pushHook(
+                                this.state.breadId + 1,
+                                `Choice-${choice.id}`,
+                                <EditChoice user={this.state.user}
+                                            pushHook={this.state.pushHook}
+                                            popHook={this.state.popHook}
+                                            breadId={this.state.breadId + 1}
+                                            storyId={this.state.storyId}
+                                            choice={choice}/>
+                            );
+                        }}>
+                            <p className="title">Choice-{choice.id}</p>
+                            <p>{choice.content}</p>
+                        </div>)
                 })}
-                <Button variant="info" onClick={() => {
-                    this.state.pushHook(
-                        this.state.breadId + 1,
-                        'New choice',
-                        <NewChoice  pushHook={this.state.pushHook}
-                                    popHook={this.state.popHook}
-                                    breadId={this.state.breadId + 1}
-                                    storyId={this.state.storyId}
-                                    choice={{id: null, content: null, parentSceneId: this.state.scene.id}}/>
-                    );
-                }}>
+                <Button variant="info" onClick={this.onAddChoice}>
                     Add Choice
                 </Button>
             </>
