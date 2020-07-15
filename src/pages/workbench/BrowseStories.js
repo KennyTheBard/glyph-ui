@@ -6,6 +6,8 @@ import ViewStory from './ViewStory.js';
 
 import { API_URL } from '../../config.js';
 
+import './Browse.scss';
+
 const axios = require('axios');
 
 class BrowseStories extends React.Component {
@@ -23,20 +25,20 @@ class BrowseStories extends React.Component {
         }
     }
 
-    search = () => {
+    componentDidMount() {
+        this.search();
+    }
+
+    search = (phrase) => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
 
-        axios.get(`${API_URL}/story`, config).then((res) => {
+        axios.get(`${API_URL}/story` + (!!phrase ? `?search=${phrase}` : ''), config).then((res) => {
             this.setState({stories: res.data});
         }).catch((error) => {
-            console.log(error)
-        })
-    }
-
-    componentDidMount() {
-        this.search();
+            console.log(error);
+        });
     }
 
     render() {
@@ -62,6 +64,9 @@ class BrowseStories extends React.Component {
                     </Button>
                 </Form>
                 <ListGroup>
+                    {(!this.state.stories.length ||this.state.stories.length === 0) && 
+                        <p className="empty">You have no stories</p>
+                    }
                     {this.state.stories.map((story) => {
                         return (
                             <ListGroup.Item key={story.id}

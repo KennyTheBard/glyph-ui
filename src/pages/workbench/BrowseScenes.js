@@ -6,6 +6,8 @@ import NewScene from './NewScene.js';
 import { API_URL } from '../../config.js';
 import ViewScene from './ViewScene.js';
 
+import './Browse.scss';
+
 const axios = require('axios');
 
 class BrowseScenes extends React.Component {
@@ -73,6 +75,9 @@ class BrowseScenes extends React.Component {
                     </Button>
                 </Form>
                 <ListGroup>
+                    {(!this.state.scenes.length ||this.state.scenes.length === 0) && 
+                        <p className="empty">You have no scenes</p>
+                    }
                     {this.state.scenes.map((scene) => {
                         return (
                             <ListGroup.Item key={scene.id}

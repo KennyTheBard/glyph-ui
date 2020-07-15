@@ -59,6 +59,19 @@ class ViewScene extends React.Component {
         );
     }
 
+    onSave = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+        
+        axios.put(`${API_URL}/story/${this.state.storyId}/scene/${this.state.scene.id}`,
+        this.state.scene, config).then(() => {
+            this.state.popHook();
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
     render() {
         return (
             <>
@@ -85,6 +98,14 @@ class ViewScene extends React.Component {
                             <p>{choice.content}</p>
                         </div>)
                 })}
+                <Button variant="danger" onClick={() => this.state.popHook()}>
+                    Cancel
+                </Button>
+                &nbsp;
+                <Button variant="success" onClick={this.onSave}>
+                    Save
+                </Button>
+                &nbsp;
                 <Button variant="info" onClick={this.onAddChoice}>
                     Add Choice
                 </Button>
