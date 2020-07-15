@@ -13,20 +13,15 @@ class NewStory extends React.Component {
         this.state = {
             history: props.history,
             user: props.user,
+            pushHook: props.pushHook,
+            popHook: props.popHook,
+            breadId: props.breadId,
             title: null,
             description: null,
         }
     }
 
-    onTitleChange = (e) => {
-        this.setState({title: e.target.value});
-    }
-
-    onDescriptionChange = (e) => {
-        this.setState({description: e.target.value});
-    }
-
-    onCreate = (e) => {
+    onCreate = () => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
@@ -34,8 +29,8 @@ class NewStory extends React.Component {
         axios.post(`${API_URL}/story`, {
             title: this.state.title,
             description: this.state.description,
-        }, config).then((res) => {
-            this.state.history.push(`/story/edit/${res.data.id}`);
+        }, config).then(() => {
+            this.state.popHook();
         }).catch((error) => {
             console.log(error);
         });
@@ -48,13 +43,13 @@ class NewStory extends React.Component {
                     <Form.Label>Title</Form.Label>
                     <Form.Control   type="textarea" size="lg"
                                     placeholder="Title"
-                                    onChange={this.onTitleChange}/>
+                                    onChange={(e) => this.setState({title: e.target.value})}/>
                 </Form.Group>
                 <Form.Group controlId="formDescription">
                     <Form.Label>Description</Form.Label>
                     <Form.Control   type="textarea" as="textarea"
                                     placeholder="Describe the story in a few sentences. No spoilers!"
-                                    onChange={this.onDescriptionChange}/>
+                                    onChange={(e) => this.setState({description: e.target.value})}/>
                 </Form.Group>
                 <Button variant="primary"
                         onClick={this.onCreate}>

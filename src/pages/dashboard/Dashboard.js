@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
         }
     }
 
-    componentDidMount() {
+    search = () => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
@@ -30,13 +30,22 @@ class Dashboard extends React.Component {
         })
     }
 
+    componentDidMount() {
+        this.search();
+    }
+
     render() {
         return (
             <>
                 <Form inline>
-                    <Button variant="success" onClick={() => this.props.history.push("/story/new")}>New story</Button>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-primary">Search</Button>
+                    <Button variant="outline-primary" onClick={this.search}>
+                        Search
+                    </Button>
+                    &nbsp;
+                    <Button variant="success" onClick={() => this.props.history.push("/story/new")}>
+                        New story
+                    </Button>
                 </Form>
                 {this.state.stories.map((story, index) => {
                     return <StoryCard history={this.state.history} key={index} story={story}/>

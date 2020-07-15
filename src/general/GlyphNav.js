@@ -15,11 +15,14 @@ function GlyphNav(props) {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link onClick={() => history.push("/")}>Home</Nav.Link>
-                    <Nav.Link>Link</Nav.Link>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item>Action</NavDropdown.Item>
+                    <Nav.Link onClick={() => history.push("/library")}>Library</Nav.Link>
+                    <Nav.Link onClick={() => history.push("/workbench")}>Workbench</Nav.Link>
+                    <NavDropdown title="More" id="basic-nav-dropdown">
+                        <NavDropdown.Item>About</NavDropdown.Item>
+                        <NavDropdown.Item>FAQ</NavDropdown.Item>
+                        <NavDropdown.Item>Contact us</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item>Separated link</NavDropdown.Item>
+                        <NavDropdown.Item>Buy tokens</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>

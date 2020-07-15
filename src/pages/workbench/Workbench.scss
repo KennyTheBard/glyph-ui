@@ -1,0 +1,31 @@
+.simple-breadcrumb {
+    .breadcrumb {
+        background-color: transparent;
+
+        :first-child ::before {
+            display: inline-block;
+            padding-right: 0.5rem;
+            color: #6c757d;
+            content: "/";
+        }
+    }
+}
+
+.horizontal-flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.previous {
+    padding-right: 2%
+}
+
+.last {
+    padding-left: 2%;
+    border-left: 1px solid #555;
+}
+
+.panel-container {
+    width: 50%;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, FormControl, Button, ListGroup } from 'react-bootstrap';
 
-import EditScene from './EditScene.js';
+import EditScene from './ViewScene.js';
 import NewScene from './NewScene.js';
 
 import { API_URL } from '../../config.js';
@@ -22,6 +22,7 @@ class BrowseScenes extends React.Component {
             breadId: props.breadId,
             scenes: [],
             searchPhrase: null,
+            activeSceneId: null,
         }
     }
 
@@ -57,35 +58,40 @@ class BrowseScenes extends React.Component {
                         Search
                     </Button>
                     &nbsp;
-                    <Button variant="primary" onClick={() =>
-                        this.state.pushHook(this.state.breadId + 1,
-                                            'new scene',
-                                            <NewScene   pushHook={this.state.pushHook}
-                                                        popHook={this.state.popHook}
-                                                        breadId={this.state.breadId + 1}
-                                                        storyId={this.state.storyId}/>
-                        )
-                    }>
+                <Button variant="primary" onClick={() => {
+                        this.state.pushHook(
+                            this.state.breadId + 1,
+                            'New scene',
+                            <NewScene   pushHook={this.state.pushHook}
+                                        popHook={this.state.popHook}
+                                        breadId={this.state.breadId + 1}
+                                        storyId={this.state.storyId}/>
+                        );
+                    }}>
                         New scene
                     </Button>
                 </Form>
                 <ListGroup>
                     {this.state.scenes.map((scene) => {
                         return (
-                            <ListGroup.Item key={scene.id} 
-                                            onClick={() =>
-                                                this.state.pushHook(this.state.breadId + 1,
-                                                                    `Scene-${scene.id}`,
-                                                                    <EditScene  storyId={this.state.storyId} 
-                                                                                scene={scene}
-                                                                                key={scene.id}
-                                                                                breadId={this.state.breadId + 1}
-                                                                                pushHook={this.state.pushHook}
-                                                                                popHook={this.state.popHook}/>)
-                                            }>
-                                <div className="scene-title">
-                                    <b>{scene.id}</b>
-                                    {scene.content}
+                            <ListGroup.Item key={scene.id}
+                                            active={this.state.activeSceneId === scene.id}
+                                            onClick={() => {
+                                                this.setState({activeSceneId: scene.id});
+                                                this.state.pushHook(
+                                                    this.state.breadId + 1,
+                                                    `Scene-${scene.id}`,
+                                                    <EditScene  storyId={this.state.storyId} 
+                                                                scene={scene}
+                                                                key={scene.id}
+                                                                breadId={this.state.breadId + 1}
+                                                                pushHook={this.state.pushHook}
+                                                                popHook={this.state.popHook}/>
+                                                );
+                                            }}>
+                                <div>
+                                    <p><b>Scene-{scene.id}</b></p>
+                                    <p>{scene.content}</p>
                                 </div>
                             </ListGroup.Item>
                         )

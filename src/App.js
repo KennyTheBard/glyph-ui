@@ -9,8 +9,8 @@ import Dashboard from './pages/dashboard/Dashboard.js';
 import Activate from './pages/activate/Activate.js';
 import Register from './pages/register/Register.js';
 import Login from './pages/login/Login.js';
-import NewStory from './pages/editor/NewStory.js';
-import Editor from './pages/editor/Editor.js';
+import Library from './pages/library/Library.js';
+import Workbench from './pages/workbench/Workbench.js';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.scss';
@@ -62,21 +62,18 @@ function App() {
 										setUserHook={setUser}
 									/>
 								}/>
-						<Route exact path="/story/new"
+						<Route exact path="/library"
 								render={(matchProps) => 
-									<NewStory
+									<Library
 										{...matchProps}
 									/>
 								}/>
-						<Route exact path="/story/:storyId/edit"
+						<Route exact path="/workbench"
 								render={(matchProps) => 
-									<Editor
+									<Workbench
 										{...matchProps}
 									/>
 								}/>
-						<Route exact path="/story/:storyId/play">
-							<Dashboard/>
-						</Route>
 					</Switch>
 				</div>
 			</BrowserRouter>

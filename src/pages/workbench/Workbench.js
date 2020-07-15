@@ -1,9 +1,9 @@
 import React from 'react';
 import { Breadcrumb } from 'react-bootstrap';
 
-import BrowseScenes from './BrowseScenes.js';
+import BrowseStories from './BrowseStories.js';
 
-import './Editor.scss';
+import './Workbench.scss';
 
 class Editor extends React.Component {
 
@@ -18,12 +18,11 @@ class Editor extends React.Component {
             history: props.history,
             user: props.user,
             storyId: storyId,
-            breadcrumbs: [`Story-${storyId}`],
+            breadcrumbs: [`My stories`],
             components: [(
-                <BrowseScenes   pushHook={this.pushComponent}
+                <BrowseStories  pushHook={this.pushComponent}
                                 popHook={this.popComponent}
                                 breadId={0}
-                                key={0}
                                 storyId={storyId}/>
             )],
         }
@@ -46,7 +45,7 @@ class Editor extends React.Component {
     render() {
         return (
             <>
-                <Breadcrumb>
+                <Breadcrumb className="simple-breadcrumb">
                     {this.state.breadcrumbs.map((bc, index) => {
                         return (
                             <Breadcrumb.Item key={bc} onClick={() => this.setState({
@@ -59,7 +58,11 @@ class Editor extends React.Component {
                     })}
                 </Breadcrumb>
                 <div className="horizontal-flex-container">
-                    {this.state.components.slice(-2)}
+                    {this.state.components.slice(-2).map((c, index) => 
+                        <div key={index} className={"panel-container " + ((index !== 0) ? "last" : "previous")}>
+                            {c}
+                        </div>
+                    )}
                 </div>
             </>
         )
