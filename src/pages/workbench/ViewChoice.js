@@ -46,7 +46,7 @@ class ViewChoice extends React.Component {
 
     onNextSceneChange = (e) => {
         let choice = this.state.choice;
-        choice.nextSceneId = e.target.value;
+        choice.nextSceneId = parseInt(e.target.value);
         this.setState({choice: choice});
     }
 
@@ -79,9 +79,15 @@ class ViewChoice extends React.Component {
                                     onChangeHook={this.onContentChange}/>
                     <EditSelect key={this.state.scenes.length}
                                 keys={this.state.scenes.map((s) => s.id)}
-                                values={this.state.scenes.map((s) => s.content)}
+                                values={this.state.scenes.map((s) => s.id)}
                                 selected={this.state.choice.nextSceneId}
                                 onChangeHook={this.onNextSceneChange}/>
+                    <p>
+                        {this.state.scenes
+                            .filter((s) => s.id === this.state.choice.nextSceneId)
+                            .map((s) => s.content)
+                        }
+                    </p>
                 </div>
                 <Button variant="danger" onClick={() => this.state.popHook()}>Cancel</Button>
                 &nbsp;
