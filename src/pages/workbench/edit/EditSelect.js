@@ -7,7 +7,9 @@ class EditSelect extends React.Component {
         super(props)
 
         this.state = {
+            keys: props.keys,
             values: props.values,
+            selected: props.selected,
             onChangeHook: props.onChangeHook,
 
             focused: null,
@@ -21,9 +23,17 @@ class EditSelect extends React.Component {
                                 onChange={this.state.onChangeHook}
                                 onFocus={() => this.setState({focused: true})}
                                 onBlur={() => this.setState({focused: false})}
-                                plaintext={!this.state.focused}>
+                                plaintext={!this.state.focused}
+                                defaultValue={!this.state.selected ? 'default' : this.state.selected}>
+                    <option hidden disabled value="default">select an option</option>
                     {this.state.values.map((value, index) => {
-                        <option value="index">{value}</option>
+                        let id = this.state.keys[index];
+                        return (
+                            <option key={id}
+                                    value={id}>
+                                {value}
+                            </option>
+                        );
                     })}
                 </Form.Control>
             </>

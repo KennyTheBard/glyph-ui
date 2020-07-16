@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
 import EditTextarea from './edit/EditTextarea.js';
+import EditSelect from './edit/EditSelect.js';
 
 const axios = require('axios');
 
@@ -19,26 +20,49 @@ class ViewChoice extends React.Component {
             breadId: props.breadId,
             storyId: props.storyId,
             scene: props.scene,
-            choice: props.choice,            
+            choice: props.choice,         
+            scenes: [],
         }
     }
 
-    onChoiceContentChange = (e) => {
+    componentDidMount() {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.get(`${API_URL}/story/${this.state.storyId}/scene`, config)
+        .then((res) => {
+            this.setState({scenes: res.data});
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    onContentChange = (e) => {
         let choice = this.state.choice;
         choice.content = e.target.value;
         this.setState({choice: choice});
     }
 
-    onSave = () => {
-        if (this.state.choice.content === this.state.originalChoice.content) {
-            return;
-        }
+    onNextSceneChange = (e) => {
+        let choice = this.state.choice;
+        choice.nextSceneId = e.target.value;
+        this.setState({choice: choice});
+    }
 
+    onSave = () => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
 
         axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/details`, this.state.choice, config)
+        .then(() => {
+            this.state.popHook();
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/next`, this.state.choice, config)
         .then(() => {
             this.state.popHook();
         }).catch((error) => {
@@ -52,7 +76,12 @@ class ViewChoice extends React.Component {
                 <div>
                     <p className="title">Choice-{this.state.choice.id}</p>
                     <EditTextarea   value={this.state.choice.content}
-                                    onChangeHook={this.onChoiceContentChange}/>
+                                    onChangeHook={this.onContentChange}/>
+                    <EditSelect key={this.state.scenes.length}
+                                keys={this.state.scenes.map((s) => s.id)}
+                                values={this.state.scenes.map((s) => s.content)}
+                                selected={this.state.choice.nextSceneId}
+                                onChangeHook={this.onNextSceneChange}/>
                 </div>
                 <Button variant="danger" onClick={() => this.state.popHook()}>Cancel</Button>
                 &nbsp;

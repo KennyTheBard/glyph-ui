@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
-import EditChoice from './EditChoice.js';
+import ViewChoice from './ViewChoice.js';
 import NewChoice from './NewChoice.js';
 import EditTextarea from './edit/EditTextarea.js';
 
@@ -86,7 +86,7 @@ class ViewScene extends React.Component {
                             this.state.pushHook(
                                 this.state.breadId + 1,
                                 `Choice-${choice.id}`,
-                                <EditChoice user={this.state.user}
+                                <ViewChoice user={this.state.user}
                                             pushHook={this.state.pushHook}
                                             popHook={this.state.popHook}
                                             breadId={this.state.breadId + 1}

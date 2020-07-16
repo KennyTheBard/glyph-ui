@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-import { API_URL } from '../../config.js';
 import EditTextarea from './edit/EditTextarea.js';
+import BrowseScenes from './BrowseScenes.js';
+
+import { API_URL } from '../../config.js';
 
 import './ViewScene.scss';
-import BrowseScenes from './BrowseScenes.js';
 
 const axios = require('axios');
 
