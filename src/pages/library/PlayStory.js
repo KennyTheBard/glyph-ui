@@ -20,15 +20,13 @@ class PlayStory extends React.Component {
         }
     }
 
-    onChoiceFactory = (choiceId) => {
+    load = () => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
 
         return (e) => {
-            axios.post(`${API_URL}/story/choose`, {
-                choiceId: choiceId,
-            }, config).then((res) => {
+            axios.get(`${API_URL}/current`, config).then((res) => {
                 this.setState({
                     scene: res.data.scene,
                     choices: res.data.choices,
@@ -38,19 +36,34 @@ class PlayStory extends React.Component {
             });
         }
     }
+
+    onChoice = (choiceId) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.post(`${API_URL}/choose`, {
+            choiceId: choiceId,
+        }, config).then((res) => {
+            this.setState({
+                scene: res.data.scene,
+                choices: res.data.choices,
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
     
     render() {
         return (
             <>
-                <div className="sceneTitle">
-                    {this.state.scene.title}
-                </div>
-                <div className="sceneContent">
-                    {this.state.scene.content}
+                <div>
+                    <p>{this.state.scene.title}</p>
+                    <p>{this.state.scene.content}</p>
                 </div>
                 <ListGroup>
                     {this.state.choices.map((choice) => {
-                        <ListGroup.Item onClick={onChoiceFactory(choice.id)}>
+                        <ListGroup.Item onClick={() => this.onChoice(choice.id)}>
                             {choice.content}
                         </ListGroup.Item>
                     })}

@@ -1,6 +1,5 @@
 import React from 'react';
-import StoryCard from './StoryCard';
-import { Form, FormControl, Button } from 'react-bootstrap';
+import { Form, FormControl, Button, Card } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
 
@@ -15,6 +14,7 @@ class Dashboard extends React.Component {
             history: props.history,
             token: null,
             stories: [],
+            searchPhrase: null,
         }
     }
 
@@ -38,17 +38,33 @@ class Dashboard extends React.Component {
         return (
             <>
                 <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-primary" onClick={this.search}>
+                    <FormControl    type="text"
+                                    placeholder="Search scene title"
+                                    className="mr-sm-2"
+                                    onChange={(e) => this.setState({searchPhrase: e.target.value})}/>
+                    <Button variant="outline-primary"
+                            onClick={() =>
+                                this.search(this.state.searchPhrase)
+                            }>
                         Search
                     </Button>
-                    &nbsp;
-                    <Button variant="success" onClick={() => this.props.history.push("/story/new")}>
-                        New story
-                    </Button>
                 </Form>
-                {this.state.stories.map((story, index) => {
-                    return <StoryCard history={this.state.history} key={index} story={story}/>
+                {(!this.state.stories) && 
+                    <p className="empty">It seems there are no stories yet</p>
+                }
+                {this.state.stories.map((story) => {
+                    return (
+                        <Card style={{ width: '18rem' }}>
+                            {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+                            <Card.Body>
+                                <Card.Title>{story.title}</Card.Title>
+                                <Card.Text>
+                                    {story.description}
+                                </Card.Text>
+                                <Button variant="primary">Play</Button>
+                            </Card.Body>
+                        </Card>
+                    )
                 })}
             </>
         )
