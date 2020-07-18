@@ -15,9 +15,43 @@ class PlayStory extends React.Component {
             history: props.history,
             user: props.user,
             storyId: props.storyId,
+            instanceId: null,
             scene: null,
             choices: [],
         }
+    }
+
+    componentDidMount() {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance`, config).then((res) => {
+            let instances = res.data;
+            if (instances.length !== 0) {
+                this.setState({
+                    instanceId: res.data[0].id
+                }).then(this.load);
+            } else {
+                this.startNewPlaythough()
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    startNewPlaythough = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.post(`${API_URL}/story/${this.state.storyId}/story_instance/`, config)
+        .then((res) => {
+            this.setState({instanceId: res.data.id});
+            this.load();
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     load = () => {
@@ -25,16 +59,14 @@ class PlayStory extends React.Component {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
 
-        return (e) => {
-            axios.get(`${API_URL}/current`, config).then((res) => {
-                this.setState({
-                    scene: res.data.scene,
-                    choices: res.data.choices,
-                })
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
+        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/current`, config).then((res) => {
+            this.setState({
+                scene: res.data.scene,
+                choices: res.data.choices,
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     onChoice = (choiceId) => {
@@ -63,9 +95,11 @@ class PlayStory extends React.Component {
                 </div>
                 <ListGroup>
                     {this.state.choices.map((choice) => {
-                        <ListGroup.Item onClick={() => this.onChoice(choice.id)}>
-                            {choice.content}
-                        </ListGroup.Item>
+                        return (
+                            <ListGroup.Item onClick={() => this.onChoice(choice.id)}>
+                                {choice.content}
+                            </ListGroup.Item>
+                        );
                     })}
                 </ListGroup>
             </>

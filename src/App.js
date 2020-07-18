@@ -5,11 +5,13 @@ import {
 import { createBrowserHistory } from 'history';
 
 import GlyphNav from './general/GlyphNav.js';
-import Dashboard from './pages/dashboard/Dashboard.js';
+import Dashboard from './pages/general/Dashboard.js';
+import StoryPage from './pages/general/StoryPage.js';
 import Activate from './pages/activate/Activate.js';
 import Register from './pages/register/Register.js';
 import Login from './pages/login/Login.js';
 import Library from './pages/library/Library.js';
+import PlayStory from './pages/library/PlayStory.js';
 import Workbench from './pages/workbench/Workbench.js';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -35,6 +37,13 @@ function App() {
 								render={(matchProps) => 
 									<Dashboard
 										{...matchProps}
+									/>
+								}/>
+						<Route exact path="/story/:storyId"
+								render={(matchProps) => 
+									<StoryPage
+										{...matchProps}
+										user={user}
 									/>
 								}/>
 						<Route 	exact path={"/register"}
@@ -65,6 +74,13 @@ function App() {
 						<Route exact path="/library"
 								render={(matchProps) => 
 									<Library
+										{...matchProps}
+										user={user}
+									/>
+								}/>
+						<Route exact path="/play/:storyId"
+								render={(matchProps) => 
+									<PlayStory
 										{...matchProps}
 										user={user}
 									/>

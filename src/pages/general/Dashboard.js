@@ -12,7 +12,6 @@ class Dashboard extends React.Component {
 
         this.state = {
             history: props.history,
-            token: null,
             stories: [],
             searchPhrase: null,
         }
@@ -61,7 +60,10 @@ class Dashboard extends React.Component {
                                 <Card.Text>
                                     {story.description}
                                 </Card.Text>
-                                <Button variant="primary">Play</Button>
+                                <Button variant="primary"
+                                        onClick={() => this.state.history.push(`/story/${story.id}`)}>
+                                    Play
+                                </Button>
                             </Card.Body>
                         </Card>
                     )
