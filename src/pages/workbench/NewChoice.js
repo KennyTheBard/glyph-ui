@@ -28,11 +28,7 @@ class NewChoice extends React.Component {
     }
 
     onSave = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.post(`${API_URL}/story/${this.state.storyId}/choice`, this.state.choice, config)
+        axios.post(`${API_URL}/story/${this.state.storyId}/choice`, this.state.choice)
         .then(() => {
             this.state.popHook();
         }).catch((error) => {

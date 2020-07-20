@@ -26,11 +26,7 @@ class ViewChoice extends React.Component {
     }
 
     componentDidMount() {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/scene`, config)
+        axios.get(`${API_URL}/story/${this.state.storyId}/scene`)
         .then((res) => {
             this.setState({scenes: res.data});
         }).catch((error) => {
@@ -51,18 +47,14 @@ class ViewChoice extends React.Component {
     }
 
     onSave = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/details`, this.state.choice, config)
+        axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/details`, this.state.choice)
         .then(() => {
             this.state.popHook();
         }).catch((error) => {
             console.log(error);
         });
 
-        axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/next`, this.state.choice, config)
+        axios.put(`${API_URL}/story/${this.state.storyId}/choice/${this.state.choice.id}/next`, this.state.choice)
         .then(() => {
             this.state.popHook();
         }).catch((error) => {

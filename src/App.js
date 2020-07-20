@@ -21,11 +21,16 @@ import { parseJwt } from './utils/parseJwt.js';
 
 require('dotenv').config()
 
+const axios = require('axios');
+
 const history = createBrowserHistory();
 
 function App() {
 	const storedJwt = localStorage.getItem("jwt");
-	const [user, setUser] = useState(!storedJwt ? null : parseJwt(storedJwt));
+	if (!!storedJwt) {
+		axios.defaults.headers.common['Authorization'] = `Bearer ${storedJwt}`;
+	}
+	const [user, setUser] = useState(!!storedJwt ? parseJwt(storedJwt) : null);
 
 	return (
 		<>

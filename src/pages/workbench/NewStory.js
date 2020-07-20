@@ -22,14 +22,10 @@ class NewStory extends React.Component {
     }
 
     onCreate = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
         axios.post(`${API_URL}/story`, {
             title: this.state.title,
             description: this.state.description,
-        }, config).then(() => {
+        }).then(() => {
             this.state.popHook();
         }).catch((error) => {
             console.log(error);

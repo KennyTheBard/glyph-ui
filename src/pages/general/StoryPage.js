@@ -24,11 +24,7 @@ class StoryPage extends React.Component {
     }
 
     loadStory = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}`, config)
+        axios.get(`${API_URL}/story/${this.state.storyId}`)
         .then((res) => {
             let story = res.data;
             this.setState({story: story});
@@ -39,11 +35,7 @@ class StoryPage extends React.Component {
     }
 
     // loadAuthor = ( id) => {
-    //     const config = {
-    //         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-    //     };
-
-    //     axios.get(`${API_URL}/story/${this.state.storyId}`, config)
+    //     axios.get(`${API_URL}/story/${this.state.storyId}`)
     //     .then((res) => {
     //         let story = res.data;
     //         this.setState({story: story});
@@ -54,22 +46,14 @@ class StoryPage extends React.Component {
     // }
 
     loadStoryInstance = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance`, config)
+        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance`)
         .then((res) => {
             this.setState({storyInstance: res.data});
         });
     }
 
     onStart = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-        
-        axios.post(`${API_URL}/story/${this.state.storyId}/story-instance`, config)
+        axios.post(`${API_URL}/story/${this.state.storyId}/story-instance`)
         .then(() => {
             this.state.history.push(`/play/${this.state.storyId}`);
         }).catch((error) => {

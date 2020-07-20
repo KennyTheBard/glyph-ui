@@ -21,15 +21,11 @@ class NewScene extends React.Component {
     }
 
     onCreate = (e) => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
         axios.post(`${API_URL}/story/${this.state.storyId}/scene`, {
             content: this.state.content,
             template: false,
             note: "",
-        }, config).then((res) => {
+        }).then((res) => {
             this.state.popHook();
         }).catch((error) => {
             console.log(error);

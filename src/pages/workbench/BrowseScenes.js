@@ -33,12 +33,8 @@ class BrowseScenes extends React.Component {
     }
 
     search = (phrase) => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/scene` + (!!phrase ? `?search=${phrase}` : ''),
-        config).then((res) => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/scene` + (!!phrase ? `?search=${phrase}` : ''))
+        .then((res) => {
             this.setState({scenes: res.data});
         }).catch((error) => {
             console.log(error);

@@ -24,18 +24,14 @@ class Library extends React.Component {
     }
 
     search = (phrase) => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance` + (!!phrase ? `?search=${phrase}` : ''),
-        config).then((res) => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance` + (!!phrase ? `?search=${phrase}` : ''))
+        .then((res) => {
             this.setState({storyInstances: res.data});
         }).catch((error) => {
             console.log(error);
         });
 
-        axios.get(`${API_URL}/story`, config).then((res) => {
+        axios.get(`${API_URL}/story`).then((res) => {
             let storiesMap = {};
             res.data.forEach((story) => storiesMap[`${story.id}`] = story);
             this.setState({storiesMap: storiesMap});

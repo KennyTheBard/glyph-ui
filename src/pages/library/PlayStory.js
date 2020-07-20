@@ -23,11 +23,7 @@ class PlayStory extends React.Component {
     }
 
     componentDidMount() {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance`, config).then((res) => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance`).then((res) => {
             this.setState({
                 instanceId: res.data[0].id
             }).then(this.loadCurrentScene);
@@ -37,11 +33,7 @@ class PlayStory extends React.Component {
     }
 
     loadCurrentScene = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/current`, config).then((res) => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/current`).then((res) => {
             this.setState({
                 scene: res.data.scene,
                 choices: res.data.choices,
@@ -52,13 +44,9 @@ class PlayStory extends React.Component {
     }
 
     onMakeChoice = (choiceId) => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
         axios.post(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/choose`, {
             choiceId: choiceId,
-        }, config).then(() => {
+        }).then(() => {
             this.loadCurrentScene();
         }).catch((error) => {
             console.log(error);

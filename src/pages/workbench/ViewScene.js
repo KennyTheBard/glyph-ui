@@ -28,11 +28,7 @@ class ViewScene extends React.Component {
     }
 
     componentDidMount() {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story/${this.state.storyId}/choice/all/${this.state.scene.id}`, config)
+        axios.get(`${API_URL}/story/${this.state.storyId}/choice/all/${this.state.scene.id}`)
         .then((res) => {
             this.setState({choices: res.data});
         }).catch((error) => {
@@ -60,12 +56,8 @@ class ViewScene extends React.Component {
     }
 
     onSave = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-        
-        axios.put(`${API_URL}/story/${this.state.storyId}/scene/${this.state.scene.id}`,
-        this.state.scene, config).then(() => {
+        axios.put(`${API_URL}/story/${this.state.storyId}/scene/${this.state.scene.id}`, this.state.scene)
+        .then(() => {
             this.state.popHook();
         }).catch((error) => {
             console.log(error);

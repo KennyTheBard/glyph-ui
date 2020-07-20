@@ -30,11 +30,8 @@ class BrowseStories extends React.Component {
     }
 
     search = (phrase) => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story` + (!!phrase ? `?search=${phrase}` : ''), config).then((res) => {
+        axios.get(`${API_URL}/story` + (!!phrase ? `?search=${phrase}` : ''))
+        .then((res) => {
             this.setState({stories: res.data});
         }).catch((error) => {
             console.log(error);

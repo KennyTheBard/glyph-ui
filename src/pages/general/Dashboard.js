@@ -18,11 +18,7 @@ class Dashboard extends React.Component {
     }
 
     search = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-
-        axios.get(`${API_URL}/story`, config).then((res) => {
+        axios.get(`${API_URL}/story`).then((res) => {
             this.setState({stories: res.data});
         }).catch((error) => {
             console.log(error)
@@ -53,7 +49,7 @@ class Dashboard extends React.Component {
                 }
                 {this.state.stories.map((story) => {
                     return (
-                        <Card style={{ width: '18rem' }}>
+                        <Card key={story.id} style={{ width: '18rem' }}>
                             {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
                             <Card.Body>
                                 <Card.Title>{story.title}</Card.Title>

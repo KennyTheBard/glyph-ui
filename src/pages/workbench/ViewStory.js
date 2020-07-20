@@ -50,12 +50,8 @@ class ViewScene extends React.Component {
     }
 
     onSave = () => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
-        };
-        
-        axios.put(`${API_URL}/story/${this.state.story.id}/details`,
-        this.state.story, config).then(() => {
+        axios.put(`${API_URL}/story/${this.state.story.id}/details`, this.state.story)
+        .then(() => {
             this.state.popHook();
         }).catch((error) => {
             console.log(error);

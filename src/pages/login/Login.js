@@ -51,6 +51,7 @@ class Login extends React.Component {
         const handleResult = (res) => {
             that.state.setUserHook(parseJwt(res.data));
             localStorage.setItem('jwt', res.data);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data}`;
             that.state.history.push("/");
         }
 
