@@ -77,7 +77,7 @@ class Library extends React.Component {
                                             </Card.Text>
                                         </>
                                     }
-                                <Button variant="primary">Continue</Button>
+                                <Button variant="primary" onClick={() => this.state.history.push(`/play/${instance.storyId}`)}>Continue</Button>
                             </Card.Body>
                         </Card>
                     )

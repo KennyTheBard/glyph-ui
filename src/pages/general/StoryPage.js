@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormControl, Button, Card } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
 
@@ -14,25 +14,69 @@ class StoryPage extends React.Component {
             history: props.history,
             storyId: props.match.params.storyId,
             story: null,
+            storyInstance: null,
         }
     }
 
-    search = () => {
+    componentDidMount() {
+        this.loadStory();
+        this.loadStoryInstance();
+    }
+
+    loadStory = () => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
         };
 
-        axios.get(`${API_URL}/story/${this.state.storyId}`, config).then((res) => {
-            this.setState({story: res.data});
+        axios.get(`${API_URL}/story/${this.state.storyId}`, config)
+        .then((res) => {
+            let story = res.data;
+            this.setState({story: story});
+            // this.loadAuthor(story.authorId);
         }).catch((error) => {
-            console.log(error)
-        })
+            console.log(error);
+        });
     }
 
-    componentDidMount() {
-        this.search();
+    // loadAuthor = ( id) => {
+    //     const config = {
+    //         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+    //     };
+
+    //     axios.get(`${API_URL}/story/${this.state.storyId}`, config)
+    //     .then((res) => {
+    //         let story = res.data;
+    //         this.setState({story: story});
+
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     });
+    // }
+
+    loadStoryInstance = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+
+        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance`, config)
+        .then((res) => {
+            this.setState({storyInstance: res.data});
+        });
     }
 
+    onStart = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` }
+        };
+        
+        axios.post(`${API_URL}/story/${this.state.storyId}/story-instance`, config)
+        .then(() => {
+            this.state.history.push(`/play/${this.state.storyId}`);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+    
     render() {
         return (
             <>
@@ -43,9 +87,14 @@ class StoryPage extends React.Component {
                             <p>{this.state.story.title}</p>
                             <p>{this.state.story.description}</p>
                             {/* Author */}
-                            <Button onClick={() => this.state.history.push(`/play/${this.state.storyId}`)}>
-                                Play
-                            </Button>
+                            {(!!this.story && !!this.storyInstance)
+                                ?   <Button onClick={() => this.state.history.push(`/play/${this.state.storyId}`)}>
+                                        Continue
+                                    </Button>
+                                :   <Button onClick={this.onStart}>
+                                        Start
+                                    </Button>
+                            }
                         </div>
                         {/* Reviews */}
                     </>
