@@ -3,7 +3,6 @@ import { ListGroup } from 'react-bootstrap';
 
 import { API_URL } from '../../config.js';
 
-
 const axios = require('axios');
 
 class PlayStory extends React.Component {
@@ -14,7 +13,7 @@ class PlayStory extends React.Component {
         this.state = {
             history: props.history,
             user: props.user,
-            storyId: props.storyId,
+            storyId: props.match.params.storyId,
             instanceId: null,
             scene: null,
             error: null,
@@ -23,17 +22,25 @@ class PlayStory extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance`).then((res) => {
-            this.setState({
-                instanceId: res.data[0].id
-            }).then(this.loadCurrentScene);
+        this.loadInstance();
+    }
+
+    loadInstance = () => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance`)
+        .then((res) => {
+            return this.setState({
+                instanceId: res.data.id
+            });
+        }).then(() => {
+            this.loadCurrentScene();
         }).catch((error) => {
             console.log(error);
         });
     }
 
     loadCurrentScene = () => {
-        axios.get(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/current`).then((res) => {
+        axios.get(`${API_URL}/story/${this.state.storyId}/story-instance/${this.state.instanceId}/current`)
+        .then((res) => {
             this.setState({
                 scene: res.data.scene,
                 choices: res.data.choices,
@@ -44,7 +51,7 @@ class PlayStory extends React.Component {
     }
 
     onMakeChoice = (choiceId) => {
-        axios.post(`${API_URL}/story/${this.state.storyId}/story_instance/${this.state.instanceId}/choose`, {
+        axios.post(`${API_URL}/story/${this.state.storyId}/story-instance/${this.state.instanceId}/choose`, {
             choiceId: choiceId,
         }).then(() => {
             this.loadCurrentScene();
@@ -57,8 +64,12 @@ class PlayStory extends React.Component {
         return (
             <>
                 <div>
-                    <p>{this.state.scene.title}</p>
-                    <p>{this.state.scene.content}</p>
+                    {!!this.state.scene &&
+                        <>
+                            <p>{this.state.scene.title}</p>
+                            <p>{this.state.scene.content}</p>
+                        </>
+                    }
                 </div>
                 <ListGroup>
                     {this.state.choices.map((choice) => {

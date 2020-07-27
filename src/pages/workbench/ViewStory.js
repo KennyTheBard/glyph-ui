@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import EditTextarea from './edit/EditTextarea.js';
+import EditSelect from './edit/EditSelect.js';
 import BrowseScenes from './BrowseScenes.js';
 
 import { API_URL } from '../../config.js';
@@ -21,8 +22,18 @@ class ViewScene extends React.Component {
             pushHook: props.pushHook,
             popHook: props.popHook,
             breadId: props.breadId,
-            story: props.story,      
+            story: props.story,
+            scenes: [],
         }
+    }
+
+    componentDidMount() {
+        axios.get(`${API_URL}/story/${this.state.story.id}/scene`, this.state.story)
+        .then((res) => {
+            this.setState({scenes: res.data});
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     onStoryTitleChange = (e) => {
@@ -49,8 +60,17 @@ class ViewScene extends React.Component {
         );
     }
 
+    onStartingSceneChange = (e) => {
+        let story = this.state.story;
+        story.startingSceneId = parseInt(e.target.value);
+        this.setState({story: story});
+    }
+
     onSave = () => {
-        axios.put(`${API_URL}/story/${this.state.story.id}/details`, this.state.story)
+        Promise.all([
+            axios.put(`${API_URL}/story/${this.state.story.id}/details`, this.state.story),
+            axios.put(`${API_URL}/story/${this.state.story.id}/starting-scene`, this.state.story),
+        ])
         .then(() => {
             this.state.popHook();
         }).catch((error) => {
@@ -67,6 +87,11 @@ class ViewScene extends React.Component {
                                     onChangeHook={this.onStoryTitleChange}/>
                     <EditTextarea   value={this.state.story.description}
                                     onChangeHook={this.onStoryDescriptionChange}/>
+                    <EditSelect key={this.state.scenes.length}
+                                keys={this.state.scenes.map((s) => s.id)}
+                                values={this.state.scenes.map((s) => s.content)}
+                                selected={this.state.story.startingSceneId}
+                                onChangeHook={this.onStartingSceneChange}/>
                 </div>
                 <br/>
                 <Button variant="danger" onClick={() => this.state.popHook()}>
